@@ -1,15 +1,31 @@
+/**
+ * Clase de Utilidades referente a las Fechas
+ */
 export class DatesUtils {
 
+    /**
+     * Método que permite generar una fecha de nacimiento respecto a la edad proporcionada
+     * @param minAge Edad mínima 
+     * @param maxAge Edad máxima
+     * @returns Fecha generada aleatoriamente
+     */
     static GenRandomDateByAge(minAge: number, maxAge: number): Date {
+        /**Se obtiene la fecha actual */
         const currentDate: Date = new Date();
+        /**Se obtiene el año actual */
         const currentYear: number = currentDate.getFullYear();
 
+        /**Se obtiene un número aleatorio entre el rango de edades proporcionada */
         const randomAge: number = Math.floor(Math.random() * maxAge-minAge+1)+minAge;
 
+        /**Se obtiene la resta entre el año actual y la edad generada aleatoriamente */
         const randomBirthYear: number = currentYear - randomAge;
+        /**Se obtiene un número aleatorio entre los días */
         const randomBirthDay: number = Math.floor(Math.random() * 30)+1;
+        /**Se obtiene un número aleatorio */
         const randomBirthMonth: number = Math.floor(Math.random() * 12);
 
+        /**Se construye la nueva fecha con los datos obtenidos de forma aleatoria previamente */
         const birthDate: Date  = new Date(randomBirthYear, randomBirthMonth, randomBirthDay);
 
         return birthDate;

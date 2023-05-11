@@ -1,3 +1,6 @@
+/**
+ * Clase de Utilidades referente a los Números
+ */
 export class NumbersUtils {
     /**
      * Método que devuelve un número aleatorio entre un rango definido, y que además sea perteneciente a cierto múltiplo proporcionado

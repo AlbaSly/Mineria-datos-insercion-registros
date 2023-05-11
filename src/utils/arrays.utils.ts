@@ -1,6 +1,9 @@
+/**
+ * Clase de Utilidades referente a los Arrays
+ */
 export class ArraysUtils {
     /**
-     * Método que divide un arreglo en arreglos de menor dimensión de manera dinámica
+     * Método que divide un arreglo en una matriz menor dimensión de manera dinámica
      * @param array El array a dividir
      * @param chunkSize El tamaño del array reducido
      * @returns Array que contiene los arrays reducidos

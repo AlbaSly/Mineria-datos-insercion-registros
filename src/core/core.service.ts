@@ -11,31 +11,57 @@ import { Vuelos } from 'src/db/airbus_380_acad/entities/Vuelos';
 import { DetalleVuelos } from 'src/db/airbus_380_acad/entities/DetalleVuelos';
 import { Ocupaciones } from 'src/db/airbus_380_acad/entities/Ocupaciones';
 
+/**
+ * Clase Service para la lógica del módulo Core
+ */
 @Injectable()
 export class CoreService {
+    /**Cantidad total de clientes a generar */
     private readonly CLIENTES_SIZE: number = 100000; // cien mil
+    /**Cantidad total de detalles vuelos a generar */
     private readonly DETALLE_VUELOS_SIZE: number = 4000; // cuatro mil
+    /**Cantidad mínima de ocupaciones a generar */
     private readonly OCUPACIONES_MIN_RECORDS_COUNT: number = 1000000; // un millón
+    /**Capacidad mínima del vuelo */
     private readonly VUELOS_MIN_CAPACITY: number = 350;
+    /**Capacidad máxima del vuelo */
     private readonly VUELOS_MAX_CAPACITY: number = 500;
+    /**Múltiplos dependientes del rango entre la capacidad mínima y máxima del vuelo */
     private readonly VUELOS_MIN_MAX_MULT: number = 50;
-    private readonly VUELOS_YEAR: number = 2022; // Año del cual se generarán las fechas aleatorias
+    /**Año del cuál se generarán las fechas aleatorias */
+    private readonly VUELOS_YEAR: number = 2022;
 
+    /**Arreglo de objetos IEstado */
     private arrayOfEstados: Array<IEstado> = [];
+    /**Arreglo de objetos IMunicipio */
     private arrayOfMunicipios: Array<IMunicipio> = [];
+    /**Arreglo de objetos ICliente, con longitud establecida inicialmente */
     private arrayOfClientes: Array<ICliente> = new Array(this.CLIENTES_SIZE);
+    /**Arreglo de objetos Entidad Vuelos */
     private arrayOfVuelos: Array<Vuelos> = [];
+    /**Arreglo de objetos IDetalleVuelos, con longitud establecida inicialmente */
     private arrayOfDetallesVuelos: Array<IDetalleVuelos> = new Array(this.DETALLE_VUELOS_SIZE);
+    /**Arreglo de objetos Entidad Ocupaciones, con longitud establecida inicialmente */
     private arrayOfOcupaciones: Array<Ocupaciones> = new Array(this.OCUPACIONES_MIN_RECORDS_COUNT);
 
+    /**Array de nombres que se traerán del JSON */
     private arrayOfNombres: Array<string> = [];
+    /**Array de apellidos que se traerán del JSON */
     private arrayOfApellidos: Array<string> = [];
 
+    /**
+     * Clase constructor con inyección de dependencias
+     * @param dataSource Inyección de dependencias del TypeORM DataSource de nuestra Base de Datos
+     * @param coreHelperService Inyección de dependencias del Servicio auxiliar CoreHelper
+     */
     constructor(
         private readonly dataSource: DataSource,
         private readonly coreHelperService: CoreHelperService,
     ) {}
 
+    /**
+     * Servicio para la generación de toda la data de la aplicación de forma escalonada
+     */
     async generateData() {
         await this.coreHelperService.genSeed(
             this.arrayOfEstados,
@@ -52,6 +78,10 @@ export class CoreService {
         await this.generateAndInsertOcupaciones();
     }
 
+    /** (1)
+     * Servicio privado para la lectura e inserción de los Estados en la Base de Datos
+     * @returns Promesa Resuelta
+     */
     private async insertEstados() {
         return new Promise<void>(async (resolve, reject) => {
             console.log("Insertando datos (Estados)...");
@@ -63,6 +93,10 @@ export class CoreService {
         });
     }
 
+    /** (2)
+     * Servicio privado para la lectura e inserción de los Municipios en la Base de Datos
+     * @returns Promesa Resuelta
+     */
     private async insertMunicipios() {
         return new Promise<void>(async (resolve, reject) => {
             console.log("Insertando datos (Municipios)...");
@@ -84,6 +118,10 @@ export class CoreService {
         })
     }
 
+    /** (3)
+     * Servicio privado para la generación e inserción de los Clientes en la Base de Datos
+     * @returns Promesa Resuelta
+     */
     private async generateAndInsertClients() {
         return new Promise<void>(async (resolve, reject) => {
             console.log("Generando datos (clientes...)");
@@ -108,6 +146,10 @@ export class CoreService {
         })
     }
 
+    /** (4)
+     * Servicio privado para la generación e inserción de los DetallesVuelos en la Base de Datos
+     * @returns Promesa Resuelta
+     */
     private async generateAndInsertDetalleVuelos() {
         return new Promise<void>(async (resolve, reject) => {
             console.log("Generando datos (detalles_vuelos)...");
@@ -139,6 +181,10 @@ export class CoreService {
         });
     }
 
+    /** (5)
+     * Servicio privado para la generación e inserción de las Ocupaciones en la base de datos;
+     * @returns Promesa Resuelta
+     */
     private async generateAndInsertOcupaciones() {
         return new Promise<void>(async (resolve, reject) => {
             console.log("Generando datos (Ocupaciones)...");
