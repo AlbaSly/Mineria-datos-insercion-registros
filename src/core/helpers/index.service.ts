@@ -4,7 +4,7 @@ import { ArraysUtils } from "src/utils/arrays.utils";
 import { ICliente, IDetalleVuelos, IEstado, IMunicipio } from "../interfaces";
 import { DIRSHelper } from "src/helpers/dirs.helper";
 import { DatesUtils } from "src/utils/dates.utils";
-import { DataSource, getConnection } from "typeorm";
+import { DataSource, Repository, getConnection } from "typeorm";
 import { Vuelos } from "src/db/airbus_380_acad/entities/Vuelos";
 import { Injectable } from "@nestjs/common";
 import { NumbersUtils } from "src/utils/numbers.utils";
@@ -199,16 +199,16 @@ export class CoreHelperService {
             });
         });
     }
-    //TODO: CONTINUAR LÓGICA
+    
     private async setVuelos(arrayOfVuelos: Array<Vuelos>) {
         return new Promise<void>(async (resolve, reject) => { 
-            const REP_Vuelos = this.dataSource.getRepository(Vuelos);
+            const REP_Vuelos: Repository<Vuelos> = this.dataSource.getRepository(Vuelos);
 
             /**Se especifica que el origen o destino será México (9) */
-            const data = await REP_Vuelos.createQueryBuilder('vuelos')
-            .where('vuelos.cve_aeropuertos__origen = :origen', {origen: 9})
-            .orWhere('vuelos.cve_aeropuertos__destino = :destino', {destino: 9})
-            .getMany();
+            const data: Array<Vuelos> = await REP_Vuelos.createQueryBuilder('vuelos')
+                .where('vuelos.cve_aeropuertos__origen = :origen', {origen: 9})
+                .orWhere('vuelos.cve_aeropuertos__destino = :destino', {destino: 9})
+                .getMany();
             
             for (let x = 0; x < data.length; x++) {
                 arrayOfVuelos[x] = data[x];

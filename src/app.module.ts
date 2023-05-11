@@ -2,7 +2,6 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { airbus380acadEntitites } from './db/airbus_380_acad/entities';
 import { CoreModule } from './core/core.module';
 import { Aerolineas } from './db/airbus_380_acad/entities/Aerolineas';
 import { Aeropuertos } from './db/airbus_380_acad/entities/Aeropuertos';
