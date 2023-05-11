@@ -15,6 +15,12 @@ export class Clientes {
   @Column("int", { primary: true, name: "cve_clientes" })
   cveClientes: number;
 
+  @Column("int", {name: "cve_estados"})
+  cveEstados: number;
+
+  @Column("int", {name: "cve_municipios"})
+  cveMunicipios: number;
+
   @Column("varchar", { name: "nombre", nullable: true, length: 50 })
   nombre: string | null;
 

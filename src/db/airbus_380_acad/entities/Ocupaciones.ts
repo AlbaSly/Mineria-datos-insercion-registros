@@ -8,6 +8,12 @@ export class Ocupaciones {
   @Column("int", { primary: true, name: "cve_ocupaciones" })
   cveOcupaciones: number;
 
+  @Column("int", {name: "cve_clientes"})
+  cve_clientes: number;
+  
+  @Column("int", {name: "cve_detalle_vuelos"})
+  cve_detalle_vuelos: number;
+
   @ManyToOne(() => DetalleVuelos, (detalleVuelos) => detalleVuelos.ocupaciones)
   @JoinColumn([
     { name: "cve_detalle_vuelos", referencedColumnName: "cveDetalleVuelos" },

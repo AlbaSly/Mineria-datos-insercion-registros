@@ -1,0 +1,162 @@
+[
+  {
+    "cve_estado": 1,
+    "nombre": "Aguascalientes",
+    "abreviatura": "AGS"
+  },
+  {
+    "cve_estado": 2,
+    "nombre": "Baja California Norte",
+    "abreviatura": "BC"
+  },
+  {
+    "cve_estado": 3,
+    "nombre": "Baja California Sur",
+    "abreviatura": "BCS"
+  },
+  {
+    "cve_estado": 4,
+    "nombre": "Campeche",
+    "abreviatura": "CAM"
+  },
+  {
+    "cve_estado": 5,
+    "nombre": "Coahuila de Zaragoza",
+    "abreviatura": "COAH"
+  },
+  {
+    "cve_estado": 6,
+    "nombre": "Colima",
+    "abreviatura": "COL"
+  },
+  {
+    "cve_estado": 7,
+    "nombre": "Chiapas",
+    "abreviatura": "CHIS"
+  },
+  {
+    "cve_estado": 8,
+    "nombre": "Chihuahua",
+    "abreviatura": "CHI"
+  },
+  {
+    "cve_estado": 9,
+    "nombre": "Distrito Federal",
+    "abreviatura": "DF"
+  },
+  {
+    "cve_estado": 10,
+    "nombre": "Durango",
+    "abreviatura": "DGO"
+  },
+  {
+    "cve_estado": 11,
+    "nombre": "Guanajuato",
+    "abreviatura": "GTO"
+  },
+  {
+    "cve_estado": 12,
+    "nombre": "Guerrero",
+    "abreviatura": "GRO"
+  },
+  {
+    "cve_estado": 13,
+    "nombre": "Hidalgo",
+    "abreviatura": "HGO"
+  },
+  {
+    "cve_estado": 14,
+    "nombre": "Jalisco",
+    "abreviatura": "JAL"
+  },
+  {
+    "cve_estado": 15,
+    "nombre": "México",
+    "abreviatura": "MEX"
+  },
+  {
+    "cve_estado": 16,
+    "nombre": "Michoacán de Ocampo",
+    "abreviatura": "MICH"
+  },
+  {
+    "cve_estado": 17,
+    "nombre": "Morelos",
+    "abreviatura": "MOR"
+  },
+  {
+    "cve_estado": 18,
+    "nombre": "Nayarit",
+    "abreviatura": "NAY"
+  },
+  {
+    "cve_estado": 19,
+    "nombre": "Nuevo León",
+    "abreviatura": "NL"
+  },
+  {
+    "cve_estado": 20,
+    "nombre": "Oaxaca",
+    "abreviatura": "OAX"
+  },
+  {
+    "cve_estado": 21,
+    "nombre": "Puebla",
+    "abreviatura": "PUE"
+  },
+  {
+    "cve_estado": 22,
+    "nombre": "Querétaro de Arteaga",
+    "abreviatura": "QRO"
+  },
+  {
+    "cve_estado": 23,
+    "nombre": "Quintana Roo",
+    "abreviatura": "Q ROO"
+  },
+  {
+    "cve_estado": 24,
+    "nombre": "San Luis Potosí",
+    "abreviatura": "SLP"
+  },
+  {
+    "cve_estado": 25,
+    "nombre": "Sinaloa",
+    "abreviatura": "SIN"
+  },
+  {
+    "cve_estado": 26,
+    "nombre": "Sonora",
+    "abreviatura": "SON"
+  },
+  {
+    "cve_estado": 27,
+    "nombre": "Tabasco",
+    "abreviatura": "TAB"
+  },
+  {
+    "cve_estado": 28,
+    "nombre": "Tamaulipas",
+    "abreviatura": "TAMPS"
+  },
+  {
+    "cve_estado": 29,
+    "nombre": "Tlaxcala",
+    "abreviatura": "TLAX"
+  },
+  {
+    "cve_estado": 30,
+    "nombre": "Veracruz",
+    "abreviatura": "VER"
+  },
+  {
+    "cve_estado": 31,
+    "nombre": "Yucatán",
+    "abreviatura": "YUC"
+  },
+  {
+    "cve_estado": 32,
+    "nombre": "Zacatecas",
+    "abreviatura": "ZAC"
+  }
+]

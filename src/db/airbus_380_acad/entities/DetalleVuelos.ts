@@ -15,6 +15,10 @@ export class DetalleVuelos {
   @Column("int", { primary: true, name: "cve_detalle_vuelos" })
   cveDetalleVuelos: number;
 
+  /**Columna auxiliar en referencia a cve_vuelos */
+  @Column("int", {name: "cve_vuelos"})
+  cve_Vuelos: number;
+
   @Column("datetime", { name: "fecha_hora_salida", nullable: true })
   fechaHoraSalida: Date | null;
 

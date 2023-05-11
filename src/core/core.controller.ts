@@ -5,8 +5,8 @@ import { CoreService } from './core.service';
 export class CoreController {
   constructor(private readonly coreService: CoreService) {}
 
-  @Get('gen-clientes')
-  async generateClients() {
-    return this.coreService.generateClients();
+  @Get('gen-data')
+  async generateData() {
+    return this.coreService.generateData();
   }
 }
