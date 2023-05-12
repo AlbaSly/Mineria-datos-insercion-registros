@@ -89,7 +89,7 @@ export class CoreHelperService {
 
             const startTime: number = Date.now();
             /**Realizar el ciclo hasta completar la cantidad de generaciones */
-            while (recordsGenerated < amount) {
+            while (recordsGenerated <= amount) {
                 /**Obtener cliente aleatorio */
                 const randomCliente: ICliente = ArraysUtils.getRandomValue<ICliente>(arrayOfClientes);
                 /**Obtener detalle vuelos aleatorio */
@@ -110,6 +110,9 @@ export class CoreHelperService {
                 /**Determinar si se ha llegado a la capacidad máxima en Detalle Vuelos */
                 if (ocupacionesFoundByCveDetalleVuelos.length === randomDetalleVuelos.capacidad) continue;
 
+                /**Iterar una vez validado todo lo anterior */
+                ++recordsGenerated;
+
                 /**Se crea la entidad Ocupaciones con ayuda del repositorio */
                 const ocupacionCreated = ocupacionesREP.create({
                     cveOcupaciones: recordsGenerated,
@@ -118,9 +121,7 @@ export class CoreHelperService {
                 });
 
                 /**Guardar la ocupación dentro del arreglo*/
-                arrayOfOcupaciones[recordsGenerated] = ocupacionCreated;
-                /**Y continuar la iteración hasta llegar a la cantidad de generaciones */
-                recordsGenerated++;
+                arrayOfOcupaciones[recordsGenerated-1] = ocupacionCreated;
                 console.log("Generación de la ocupación #", recordsGenerated,);
             }
             const endTime: number = Date.now();
