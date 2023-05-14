@@ -187,25 +187,36 @@ export class CoreService {
      */
     private async generateAndInsertOcupaciones() {
         return new Promise<void>(async (resolve, reject) => {
+
             console.log("Generando datos (Ocupaciones)...");
-            await this.coreHelperService.GenerateRandomOcupacion(this.arrayOfClientes, this.arrayOfDetallesVuelos, this.OCUPACIONES_MIN_RECORDS_COUNT, this.arrayOfOcupaciones);
+            const matrixOfOcupaciones: Array<Array<Ocupaciones>> = await this.coreHelperService.GenerateRandomOcupacion(this.arrayOfClientes, this.arrayOfDetallesVuelos, this.OCUPACIONES_MIN_RECORDS_COUNT);
 
             const startTime: number = Date.now();
 
-            console.log("Optimizando array de ", this.arrayOfOcupaciones.length, " elementos...");
-            const ocupacionesChunks: Array<Array<Ocupaciones>> = ArraysUtils.sliceIntoChunks<Ocupaciones>(this.arrayOfOcupaciones, 50);
-            console.log("Arrays generados: ", ocupacionesChunks.length, " de 50 elementos cada uno");
+            console.log("Optimizando matriz de ", this.arrayOfOcupaciones.length, " arreglos...");
+            console.log("Iterando a dentro de la matriz...");
+            
+            let matrixRowCounter = 0;
+            for (const arrayOfOcupaciones of matrixOfOcupaciones) {
+                console.log("\tOptimizando arreglo con índice", matrixRowCounter);
+                
+                const ocupacionesChunks: Array<Array<Ocupaciones>> = ArraysUtils.sliceIntoChunks<Ocupaciones>(arrayOfOcupaciones, 50);
 
-            console.log("Preparando inserción en la DB...");
-            let chunkCounter: number = 0;
-            for await (const chunk of ocupacionesChunks) {
-                ++chunkCounter;
-                await this.dataSource.createQueryBuilder().insert().into(Ocupaciones).values(chunk).execute();
-                console.log("Chunk de Ocupaciones #", chunkCounter, " insertado correctamente");
+                console.log("\t\tChunks generados:", ocupacionesChunks.length, "de 50 elementos cada uno");
+                console.log("\t\tPreparando inserción de la DB...");
+                
+                let chunkCounter: number = 0;
+                for await (const chunk of ocupacionesChunks) {
+                    await this.dataSource.createQueryBuilder().insert().into(Ocupaciones).values(chunk).execute();
+                    
+                    ++chunkCounter;
+                    console.log("\t\t\tChunk de Ocupaciones #", chunkCounter, "insertado correctamente");
+                }
+                matrixRowCounter;
             }
             const endTime: number = Date.now();
+            
             console.log("Tarea finalizada: ", (endTime-startTime), "ms");
-
             resolve();
         });
     }

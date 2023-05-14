@@ -29,10 +29,10 @@ export class CoreHelperService {
      * @returns Objeto ICliente
      */
     GenerateRandomClienteObject(id: number, arrayNombres: Array<string>, arrayApellidos: Array<string>, arrayMunicipios: Array<IMunicipio>): ICliente {
-        const randomNombre = ArraysUtils.getRandomValue<string>(arrayNombres);
-        const randomApellidoPaterno = ArraysUtils.getRandomValue<string>(arrayApellidos);
-        const randomApellidoMaterno = ArraysUtils.getRandomValue<string>(arrayApellidos);
-        const randomMunicipio = ArraysUtils.getRandomValue<IMunicipio>(arrayMunicipios);
+        const randomNombre: string = ArraysUtils.getRandomValue<string>(arrayNombres);
+        const randomApellidoPaterno: string = ArraysUtils.getRandomValue<string>(arrayApellidos);
+        const randomApellidoMaterno: string = ArraysUtils.getRandomValue<string>(arrayApellidos);
+        const randomMunicipio: IMunicipio = ArraysUtils.getRandomValue<IMunicipio>(arrayMunicipios);
 
         const clienteCreated: ICliente = {
             cveClientes: id,
@@ -80,53 +80,100 @@ export class CoreHelperService {
      * @param arrayOfOcupaciones arreglo de Ocupaciones
      * @returns Promesa Resuelta
      */
-    GenerateRandomOcupacion(arrayOfClientes: Array<ICliente>, arrayOfDetallesVuelos: Array<IDetalleVuelos>, amount: number, arrayOfOcupaciones: Array<Ocupaciones>) {
-        return new Promise<void>(async (resolve, reject) => {
-            let recordsGenerated: number = 0;
+    GenerateRandomOcupacion(arrayOfClientes: Array<ICliente>, arrayOfDetallesVuelos: Array<IDetalleVuelos>, amount: number): Promise<Ocupaciones[][]> {
+        
+        const maxItemsPerChunk: number = 10000;
+        let itemsPerChunkCounter: number = 0;
+
+        let matrixOfOcupaciones: Array<Array<Ocupaciones>> = new Array();
+        let chunkCounter: number = 0;
+        
+        return new Promise(async (resolve, reject) => {
+            let rowChunkAux: Array<Ocupaciones> = new Array();
+
+            let matrixRowGenerationStartTime: number = Date.now();
+            try {
+                let recordsGenerated: number = 0;
             
-            /**Creación de la conexión al repositorio de Ocupaciones */
-            const ocupacionesREP: Repository<Ocupaciones> = this.dataSource.getRepository(Ocupaciones);
-
-            const startTime: number = Date.now();
-            /**Realizar el ciclo hasta completar la cantidad de generaciones */
-            while (recordsGenerated <= amount) {
-                /**Obtener cliente aleatorio */
-                const randomCliente: ICliente = ArraysUtils.getRandomValue<ICliente>(arrayOfClientes);
-                /**Obtener detalle vuelos aleatorio */
-                const randomDetalleVuelos: IDetalleVuelos = ArraysUtils.getRandomValue<IDetalleVuelos>(arrayOfDetallesVuelos);
-                
-                /**Encontrar la combinación de cliente aleatorio y detalle vuelos aleatorio dentro del arreglo de ocupaciones */
-                const ocupacionesFoundByClienteAndDetalleVuelosIndex = arrayOfOcupaciones.findIndex(e => 
-                    (e && e.cve_clientes && e.cve_clientes === randomCliente.cveClientes )
-                    && 
-                    (e && e.cve_detalle_vuelos && e.cve_detalle_vuelos === randomDetalleVuelos.cveDetalleVuelos));
-
-                /**Determinar si ya se encuentra esa combinación en el arreglo */
-                if (ocupacionesFoundByClienteAndDetalleVuelosIndex > -1) continue;
-
-                /**Buscar todas las ocupaciones que estén relacionadas a la clave de detalles vuelos */
-                const ocupacionesFoundByCveDetalleVuelos: Array<Ocupaciones> = [...arrayOfOcupaciones.filter(e => e.cve_detalle_vuelos === randomDetalleVuelos.cveDetalleVuelos)];
-            
-                /**Determinar si se ha llegado a la capacidad máxima en Detalle Vuelos */
-                if (ocupacionesFoundByCveDetalleVuelos.length === randomDetalleVuelos.capacidad) continue;
-
-                /**Iterar una vez validado todo lo anterior */
-                ++recordsGenerated;
-
-                /**Se crea la entidad Ocupaciones con ayuda del repositorio */
-                const ocupacionCreated = ocupacionesREP.create({
-                    cveOcupaciones: recordsGenerated,
-                    cve_clientes: randomCliente.cveClientes,
-                    cve_detalle_vuelos: randomDetalleVuelos.cveDetalleVuelos,  
-                });
-
-                /**Guardar la ocupación dentro del arreglo*/
-                arrayOfOcupaciones[recordsGenerated-1] = ocupacionCreated;
-                console.log("Generación de la ocupación #", recordsGenerated,);
+                /**Creación de la conexión al repositorio de Ocupaciones */
+                const ocupacionesREP: Repository<Ocupaciones> = this.dataSource.getRepository(Ocupaciones);
+    
+                const startTime: number = Date.now();
+                /**Realizar el ciclo hasta completar la cantidad de generaciones */
+                while (recordsGenerated <= amount) {
+                    /**Obtener cliente aleatorio */
+                    const randomCliente: ICliente = ArraysUtils.getRandomValue<ICliente>(arrayOfClientes);
+                    /**Obtener detalle vuelos aleatorio */
+                    const randomDetalleVuelos: IDetalleVuelos = ArraysUtils.getRandomValue<IDetalleVuelos>(arrayOfDetallesVuelos);
+                    
+                    /**Encontrar la combinación de cliente aleatorio y detalle vuelos aleatorio dentro del arreglo de ocupaciones */
+                    // const ocupacionesFoundByClienteAndDetalleVuelosIndex = arrayOfOcupaciones.findIndex(e => 
+                    //     (e && e.cve_clientes && e.cve_clientes === randomCliente.cveClientes )
+                    //     && 
+                    //     (e && e.cve_detalle_vuelos && e.cve_detalle_vuelos === randomDetalleVuelos.cveDetalleVuelos));
+    
+                    /**Determinar si ya se encuentra esa combinación en el arreglo */
+                    // if (ocupacionesFoundByClienteAndDetalleVuelosIndex > -1) continue;
+                    const ocupacionesFoundByClienteAndDetalleVuelos = ArraysUtils.existItemInMatrix(matrixOfOcupaciones, (e) =>
+                        (e && e.cve_clientes && e.cve_clientes === randomCliente.cveClientes)
+                        &&
+                        (e && e.cve_detalle_vuelos && e.cve_detalle_vuelos === randomDetalleVuelos.cveDetalleVuelos)
+                    );
+                    /**Si se encuentra, saltar a la siguiente iteración */
+                    if (ocupacionesFoundByClienteAndDetalleVuelos) continue;
+    
+                    /**Buscar todas las ocupaciones que estén relacionadas a la clave de detalles vuelos */
+                    // const ocupacionesFoundByCveDetalleVuelos: Array<Ocupaciones> = [...arrayOfOcupaciones.filter(e => e.cve_detalle_vuelos === randomDetalleVuelos.cveDetalleVuelos)];
+                    
+                    const ocupacionesFoundByCveDetalleVuelos: Array<Ocupaciones> = [...ArraysUtils.filterMatrixInOneArray(matrixOfOcupaciones, (e => e.cve_detalle_vuelos === randomDetalleVuelos.cveDetalleVuelos))];
+    
+                    /**Determinar si se ha llegado a la capacidad máxima en Detalle Vuelos, por lo que se salta a la siguiente iteración */
+                    if (ocupacionesFoundByCveDetalleVuelos.length === randomDetalleVuelos.capacidad) continue;
+    
+                    /**Se crea la entidad Ocupaciones con ayuda del repositorio */
+                    const ocupacionCreated = ocupacionesREP.create({
+                        cveOcupaciones: recordsGenerated,
+                        cve_clientes: randomCliente.cveClientes,
+                        cve_detalle_vuelos: randomDetalleVuelos.cveDetalleVuelos,  
+                    });
+    
+                    /**Reiniciar conteo de items por chunk y generar en la siguiente fila de la matrix */
+                    if (itemsPerChunkCounter === maxItemsPerChunk) {
+                        /**Aumentar el contador de chunks*/
+                        chunkCounter++;
+                        /**Reiniciar el contador de items por chunk */
+                        itemsPerChunkCounter = 0;
+                        /**Pushear el chunk dentro de la matriz */
+                        matrixOfOcupaciones.push(rowChunkAux);
+                        /**Limpiar el chunk */
+                        rowChunkAux = [];
+                    }
+                    
+                    rowChunkAux[itemsPerChunkCounter] = ocupacionCreated;
+                    itemsPerChunkCounter++;
+    
+                    /**Guardar la ocupación dentro del arreglo externo*/
+                    // arrayOfOcupaciones[recordsGenerated-1] = ocupacionCreated;
+                    // console.log("Generación de la ocupación #", recordsGenerated,);
+                    /**Iterar una vez validado todo lo anterior */
+                    ++recordsGenerated;
+                    if (recordsGenerated%10000 === 0) {
+                        const matrixRowGenerationEndTime: number = Date.now();
+                        console.log("Se han generado", recordsGenerated, "ocupaciones de ", amount, " ->");
+                        console.log("\tElementos en chunk de índice #", chunkCounter, ":", itemsPerChunkCounter);
+                        console.log("\t\tDuración", (matrixRowGenerationEndTime-matrixRowGenerationStartTime), " ms");
+                        /**Reiniciar el contador del inicio de generación de la fila */
+                        matrixRowGenerationStartTime = Date.now();
+                    }
+                }
+                const endTime: number = Date.now();
+                console.log("Tarea finalizada.", (endTime-startTime), " ms");
+    
+    
+                resolve(matrixOfOcupaciones);
+            } catch (error) {
+                console.log("Error durante la iteración y generación de ocupaciones:\n", error);
             }
-            const endTime: number = Date.now();
-            console.log("Tarea finalizada.", (endTime-startTime), " ms");
-            resolve();
         });
     }
 
