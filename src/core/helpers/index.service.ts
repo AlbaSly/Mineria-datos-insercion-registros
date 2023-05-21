@@ -82,10 +82,14 @@ export class CoreHelperService {
      */
     GenerateRandomOcupacion(arrayOfClientes: Array<ICliente>, arrayOfDetallesVuelos: Array<IDetalleVuelos>, amount: number): Promise<Ocupaciones[][]> {
         
+        /**Cantidad máxima de items por cada chunk a generar */
         const maxItemsPerChunk: number = 10000;
+        /**Contador para esa cantidad máxima de items por chunk */
         let itemsPerChunkCounter: number = 0;
 
+        /**El objeto matriz de las Ocupaciones donde se insertarán todos los arreglos de Ocupaciones */
         let matrixOfOcupaciones: Array<Array<Ocupaciones>> = new Array();
+        /**Contador de cada chunk a generar dentro de la matriz */
         let chunkCounter: number = 0;
         
         return new Promise(async (resolve, reject) => {
@@ -226,7 +230,7 @@ export class CoreHelperService {
             jsonStream.on('data', ({key, value}) => {
                 // console.log(key, value);
                 arrayOfEstados.push({
-                    cveEstado: value.cve_estado,
+                    cveEstados: value.cve_estado,
                     nombre: value.nombre,
                     abreviatura: value.abreviatura,
                 });

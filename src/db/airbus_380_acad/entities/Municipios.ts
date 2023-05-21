@@ -25,6 +25,6 @@ export class Municipios {
   clientes: Clientes[];
 
   @ManyToOne(() => Estados, (estados) => estados.municipios)
-  @JoinColumn([{ name: "cve_estados", referencedColumnName: "cveEstado" }])
+  @JoinColumn([{ name: "cve_estados", referencedColumnName: "cveEstados" }])
   cveEstados2: Estados;
 }

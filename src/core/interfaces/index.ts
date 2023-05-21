@@ -1,5 +1,5 @@
 export interface IEstado {
-    cveEstado: number;
+    cveEstados: number;
     nombre: string;
     abreviatura: string;
 }

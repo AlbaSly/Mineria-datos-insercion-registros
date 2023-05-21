@@ -193,9 +193,10 @@ export class CoreService {
 
             const startTime: number = Date.now();
 
-            console.log("Optimizando matriz de ", this.arrayOfOcupaciones.length, " arreglos...");
+            console.log("Optimizando matriz de ", matrixOfOcupaciones.length, " arreglos...");
             console.log("Iterando a dentro de la matriz...");
             
+            /**Contador para la fila de cada matriz */
             let matrixRowCounter = 0;
             for (const arrayOfOcupaciones of matrixOfOcupaciones) {
                 console.log("\tOptimizando arreglo con índice", matrixRowCounter);
@@ -212,7 +213,7 @@ export class CoreService {
                     ++chunkCounter;
                     console.log("\t\t\tChunk de Ocupaciones #", chunkCounter, "insertado correctamente");
                 }
-                matrixRowCounter;
+                ++matrixRowCounter;
             }
             const endTime: number = Date.now();
             

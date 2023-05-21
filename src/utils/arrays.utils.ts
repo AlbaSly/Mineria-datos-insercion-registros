@@ -63,7 +63,6 @@ export class ArraysUtils {
                 if (callback(item, x, y, matrix)) filtered.push(item);
             }
         }
-
         return filtered;
     }
 }
