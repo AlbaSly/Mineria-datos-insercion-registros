@@ -19,11 +19,11 @@ import { Vuelos } from './db/airbus_380_acad/entities/Vuelos';
   imports: [
     TypeOrmModule.forRoot({
       type: 'mssql',
-      host: 'localhost',
-      port: 1433,
-      username: 'sa',
-      password: 'Albabianca15042002_',
-      database: 'airbus_380_acad',
+      host: process.env.DB_HOST,
+      port: +process.env.DB_PORT,
+      username: process.env.DB_USERNAME,
+      password: process.env.DB_PASSWORD,
+      database: process.env.DB_NAME,
       entities: [
         Aerolineas,
         Aeropuertos,
@@ -47,11 +47,11 @@ import { Vuelos } from './db/airbus_380_acad/entities/Vuelos';
     // TypeOrmModule.forRoot({
     //   name: 'random_data DATABASE',
     //   type: 'mssql',
-    //   host: 'localhost',
-    //   port: 1433,
-    //   username: 'sa',
-    //   password: 'Albabianca15042002_',
-    //   database: 'random_data',
+    //   host: '',
+    //   port: 0,
+    //   username: '',
+    //   password: '',
+    //   database: '',
     //   entities: [
     //     ...randomDataEntitites,
     //   ],
