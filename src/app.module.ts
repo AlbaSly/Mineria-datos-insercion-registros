@@ -14,9 +14,12 @@ import { Municipios } from './db/airbus_380_acad/entities/Municipios';
 import { Ocupaciones } from './db/airbus_380_acad/entities/Ocupaciones';
 import { Paises } from './db/airbus_380_acad/entities/Paises';
 import { Vuelos } from './db/airbus_380_acad/entities/Vuelos';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [
+    ConfigModule.forRoot(),
+  
     TypeOrmModule.forRoot({
       type: 'mssql',
       host: process.env.DB_HOST,

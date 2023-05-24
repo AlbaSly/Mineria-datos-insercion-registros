@@ -42,7 +42,7 @@ export class CoreService {
     /**Arreglo de objetos IDetalleVuelos, con longitud establecida inicialmente */
     private arrayOfDetallesVuelos: Array<IDetalleVuelos> = new Array(this.DETALLE_VUELOS_SIZE);
     /**Arreglo de objetos Entidad Ocupaciones, con longitud establecida inicialmente */
-    private arrayOfOcupaciones: Array<Ocupaciones> = new Array(this.OCUPACIONES_MIN_RECORDS_COUNT);
+    // private arrayOfOcupaciones: Array<Ocupaciones> = new Array(this.OCUPACIONES_MIN_RECORDS_COUNT);
 
     /**Array de nombres que se traerán del JSON */
     private arrayOfNombres: Array<string> = [];
@@ -189,7 +189,7 @@ export class CoreService {
         return new Promise<void>(async (resolve, reject) => {
 
             console.log("Generando datos (Ocupaciones)...");
-            const matrixOfOcupaciones: Array<Array<Ocupaciones>> = await this.coreHelperService.GenerateRandomOcupacion(this.arrayOfClientes, this.arrayOfDetallesVuelos, this.OCUPACIONES_MIN_RECORDS_COUNT);
+            const matrixOfOcupaciones: Array<Array<Ocupaciones>> = await this.coreHelperService.GenerateRandomOcupaciones(this.arrayOfClientes, this.arrayOfDetallesVuelos, this.OCUPACIONES_MIN_RECORDS_COUNT);
 
             const startTime: number = Date.now();
 

@@ -80,7 +80,7 @@ export class CoreHelperService {
      * @param arrayOfOcupaciones arreglo de Ocupaciones
      * @returns Promesa Resuelta
      */
-    GenerateRandomOcupacion(arrayOfClientes: Array<ICliente>, arrayOfDetallesVuelos: Array<IDetalleVuelos>, amount: number): Promise<Ocupaciones[][]> {
+    GenerateRandomOcupaciones(arrayOfClientes: Array<ICliente>, arrayOfDetallesVuelos: Array<IDetalleVuelos>, amount: number): Promise<Ocupaciones[][]> {
         
         /**Cantidad máxima de items por cada chunk a generar */
         const maxItemsPerChunk: number = 10000;
