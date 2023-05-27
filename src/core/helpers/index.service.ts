@@ -73,14 +73,14 @@ export class CoreHelperService {
     }
     
     /**
-     * Genera de forma aleatoria objetos de tipo Ocupaciones, y los inserta dentro el array proporcionado
+     * Genera de forma aleatoria objetos de tipo Ocupaciones, y genera una matriz dependiendo de la cantidad
      * @param arrayOfClientes arreglo de Clientes
      * @param arrayOfDetallesVuelos arreglo de Detalles Vuelos
      * @param amount cantidad de generaciones 
      * @param arrayOfOcupaciones arreglo de Ocupaciones
      * @returns Promesa Resuelta
      */
-    GenerateRandomOcupaciones(arrayOfClientes: Array<ICliente>, arrayOfDetallesVuelos: Array<IDetalleVuelos>, amount: number): Promise<Ocupaciones[][]> {
+    GenerateRandomOcupaciones(arrayOfClientes: Array<ICliente>, arrayOfDetallesVuelos: Array<IDetalleVuelos>, amount: number): Promise<Array<Array<Ocupaciones>>> {
         
         /**Cantidad máxima de items por cada chunk a generar */
         const maxItemsPerChunk: number = 10000;
@@ -100,7 +100,7 @@ export class CoreHelperService {
                 let recordsGenerated: number = 0;
             
                 /**Creación de la conexión al repositorio de Ocupaciones */
-                const ocupacionesREP: Repository<Ocupaciones> = this.dataSource.getRepository(Ocupaciones);
+                const ocupacionesREP: Repository<Ocupaciones> = this.dataSource.getRepository<Ocupaciones>(Ocupaciones);
     
                 const startTime: number = Date.now();
                 /**Realizar el ciclo hasta completar la cantidad de generaciones */
@@ -118,7 +118,7 @@ export class CoreHelperService {
     
                     /**Determinar si ya se encuentra esa combinación en el arreglo */
                     // if (ocupacionesFoundByClienteAndDetalleVuelosIndex > -1) continue;
-                    const ocupacionesFoundByClienteAndDetalleVuelos = ArraysUtils.existItemInMatrix(matrixOfOcupaciones, (e) =>
+                    const ocupacionesFoundByClienteAndDetalleVuelos: boolean = ArraysUtils.existItemInMatrix<Ocupaciones>(matrixOfOcupaciones, (e) =>
                         (e && e.cve_clientes && e.cve_clientes === randomCliente.cveClientes)
                         &&
                         (e && e.cve_detalle_vuelos && e.cve_detalle_vuelos === randomDetalleVuelos.cveDetalleVuelos)
@@ -135,7 +135,7 @@ export class CoreHelperService {
                     if (ocupacionesFoundByCveDetalleVuelos.length === randomDetalleVuelos.capacidad) continue;
     
                     /**Se crea la entidad Ocupaciones con ayuda del repositorio */
-                    const ocupacionCreated = ocupacionesREP.create({
+                    const ocupacionCreated: Ocupaciones = ocupacionesREP.create({
                         cveOcupaciones: recordsGenerated,
                         cve_clientes: randomCliente.cveClientes,
                         cve_detalle_vuelos: randomDetalleVuelos.cveDetalleVuelos,  
